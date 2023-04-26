@@ -1,0 +1,7 @@
+*.html
+.env
+env*
+package-lock.json
+/**/node_modules
+/**/dist/
+/**/.aws-sam/

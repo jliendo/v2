@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: Implementa la v2 del reporte de DrveThru de CV
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    MemorySize: 1024
+    Timeout: 300
+    Architectures:
+      - x86_64
+    VpcConfig:
+      SecurityGroupIds:
+        # all-out, none-in
+        - sg-0702acde250b6b573
+      SubnetIds:
+        # private-pcsapi-sn
+        - subnet-0ed1a6ccb873f6239
+        
+Resources:
+  CVDriveThruV2:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CVDriveThruV2
+      Handler: dist/App.lambdaHandler
+      Description: V2 de la funcion de reporte de DriveThru de CV
+      ReservedConcurrentExecutions: 1
+      Policies:
+        - AWSLAmbdaBasicExecutionRole
+        - Statement:
+          - Sid: SSMParameterPolicy
+            Effect: Allow
+            Action:
+            - ssm:DescribeParameters
+            - ssm:GetParameters
+            - ssm:GetParameter
+            Resource: 
+              - arn:aws:ssm:us-east-2:598966032172:parameter/pcsapi/psql/estadisticos/*
+              - arn:aws:ssm:us-east-2:598966032172:parameter/pcsapi/cv/*

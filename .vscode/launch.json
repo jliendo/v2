@@ -2,18 +2,39 @@
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  // XXX en tsconfig hay que poner sourceMap: true
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/minibrowser.ts",
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "v2:dist/App.lambdaHandler (nodejs18.x)",
       "preLaunchTask": "tsc: build - tsconfig.json",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "envFile": "${workspaceFolder}/.env"
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/template.yaml",
+        "logicalId": "CVDriveThruV2"
+      },
+      "lambda": {
+        "runtime": "nodejs18.x",
+        "payload": {
+          "json": {
+            "sucursal": "S19",
+            "fecha": "2023-04-23"
+          }
+        },
+        "environmentVariables": {}
+      }
     }
+    // XXX en tsconfig hay que poner sourceMap: true
+    // {
+    //   "type": "node",
+    //   "request": "launch",
+    //   "name": "Launch Program",
+    //   "skipFiles": ["<node_internals>/**"],
+    //   "program": "${workspaceFolder}/src/minibrowser.ts",
+    //   "preLaunchTask": "tsc: build - tsconfig.json",
+    //   "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+    //   "envFile": "${workspaceFolder}/.env"
+    // }
   ]
 }
